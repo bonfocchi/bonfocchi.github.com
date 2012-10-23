@@ -12,7 +12,7 @@ text2 : Where to start, what to use, how to make it. Research, evolution and lea
 
 img3 : mobile.png
 title3 : Responsive Delivery
-text3 : Reach the target right, cross-browser, cross-platform, mobile-friendly, fully responsive, easy access and hightly scalable.
+text3 : Reach the right target accurately. Get cross-browser, cross-platform, mobile-friendly, fully responsive, easy access and highly scalable solutions.
 
 img4 : box.png
 title4 : From Concept to Final Product

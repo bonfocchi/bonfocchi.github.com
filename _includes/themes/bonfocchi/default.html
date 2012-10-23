@@ -25,15 +25,15 @@
 	</head>
 
 	<body>
-		{% if page.url != "/about.html" %}
+		<!-- {#% if page.url != "/about.html" %} -->
 			<img src="{{ ASSET_PATH }}/img/shine.png" style="position:absolute; top:-155px; margin:auto; z-index:-10;" >
-		{% endif %}
+		<!-- {#% endif %} -->
 		<header class="container-fluid" style="z-index:100;">
 			<div class="row-fluid">
 				<nav class="span7">
 					<ul class="nav pull-left">
 			          {% if page.url != "/about.html" %}<li class="active">{% else %}<li>{% endif %}
-			          <a href="{{ site.url }}/index.html">Home</a></li>
+			          <a href="{{ site.url }}/">Home</a></li>
 
 			          {% if page.url == "/about.html" %}<li class="active">{% else %}<li>{% endif %}
 			          <a href="{{ site.url }}/about.html">About</a></li>
@@ -43,18 +43,20 @@
 				</nav>
 				<div id="social-icons" class="span5">
 					<a href="http://pt.linkedin.com/in/bonfocchi" target="_blank" title="Connect on LinkedIn">
-						<img  style="width:32px; height:32px;" src="{{ ASSET_PATH }}/img/social/linkedin.png" alt="">
+						<img src="{{ ASSET_PATH }}/img/social/linkedin.png" alt="">
 					</a>
 
 					<a href="http://twitter.com/bonfocchi" target="_blank" title="Contact via Twitter">
-						<img  style="width:32px; height:32px;" src="{{ ASSET_PATH }}/img/social/twitter.png" alt="">
+						<img src="{{ ASSET_PATH }}/img/social/twitter.png" alt="">
 					</a>
 					
 					<a href="http://facebook.com/bonfocchi" target="_blank" title="Add on Facebook">
-						<img  style="width:32px; height:32px;" src="{{ ASSET_PATH }}/img/social/facebook.png" alt="">
+						<img src="{{ ASSET_PATH }}/img/social/facebook.png" alt="">
 					</a>
 				
-
+					<a href="http://www.google.com/recaptcha/mailhide/d?k=013BGACXZN_9qYb0KPNLnWtg==&amp;c=tjXEzOkjHSVGcIF84zVDC5HZGB9I6hHBPbfPbekqu4c=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\075013BGACXZN_9qYb0KPNLnWtg\75\75\46c\75tjXEzOkjHSVGcIF84zVDC5HZGB9I6hHBPbfPbekqu4c\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Email">
+						<img src="{{ ASSET_PATH }}/img/social/email.png" alt="">
+					</a>
 					
 					
 					<!-- <img  style="width:32px; height:32px;" src="{{ ASSET_PATH }}/img/social/shelfari.png" alt=""> -->
