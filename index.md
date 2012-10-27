@@ -1,6 +1,7 @@
 ---
 layout: home
-title : Home
+title: Full Web Producer | Bonfocchi
+description: Web Developer and Business Strategist, at your service.
 
 img1 : board.png
 title1 : Business model and Strategy
