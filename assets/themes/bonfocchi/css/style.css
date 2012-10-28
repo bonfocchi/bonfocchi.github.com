@@ -4814,6 +4814,47 @@ footer p{
 .redacted{
 	padding-bottom:5px;
 	font-size:15px;
+	padding-top: 25px;
+}
+
+#lisbon{
+	left: 38%; 
+	top: 26%;
+}
+
+#copenhagen{
+	left: 43%; 
+	top: 15%;
+}
+
+#london{
+	left: 40.3%; 
+	top: 17.3%;
+}
+
+#chicago{
+	left: 15.5%; 
+	top: 24%;
+}
+
+#ventura{
+	left: 5.3%; 
+	top: 29%;
+}
+
+#philadelphia{
+	left: 19.5%; 
+	top: 25%;
+}
+
+#salvador{
+	left: 28.3%; 
+	top: 63%;
+}
+
+#florianopolis{
+	left: 25.5%; 
+	top: 73.5%;
 }
 
 .mapMark {
@@ -4823,6 +4864,51 @@ footer p{
     position: absolute;
     width: 20px;
     z-index: 100;
+}
+
+.mapMark em{
+		background-color: #FF0000;
+	    display: none;
+	    left: 0;
+	    position: absolute;
+	    text-align: center;
+	    top: -60px;
+		left:-49px;
+	    width: 100px;
+	    z-index: 200;
+	    height: 30px;
+	
+	 	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
+	    border: 1px solid black;
+	    border-radius: 7px 7px 7px 7px;
+	    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	    color: white;
+	    font: 12px Helvetica,sans-serif;
+	    padding: 7px 10px 10px;
+	    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+		line-height: 17px;
+	
+}
+
+.mapMark em:after {
+    border-top: 6px solid rgba(0, 0, 0, 0.8);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    content: "";
+    display: inline-block;
+    left: 50px;
+    position: absolute;
+    bottom: -6px;
+}
+.mapMark em:before {
+    border-top: 7px solid rgba(0, 0, 0, 0.2);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    content: "";
+    display: inline-block;
+    left: 50px;
+    position: absolute;
+    bottom: -7px;
 }
 
 .mapMarkShape{
@@ -4838,13 +4924,46 @@ footer p{
 .mapMarkGlow{
 	border: 5px solid red;
     border-radius: 20px 20px 20px 20px;
-    height: 30px;
-    left: -10px;
+    height: 35px;
+    width: 35px;
+    left: -9px;
     opacity: 0;
     position: absolute;
-    top: -10px;
-    width: 30px;
+    top: -9px;
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+  border: 4px solid #FF0000;
+    -webkit-animation: pulse 2s linear infinite;
+    -moz-animation: pulse 2s linear infinite;
+    animation: pulse 2s linear infinite;
 }
+
+/* moz */
+ @-moz-keyframes pulse {
+   0% { -moz-transform: scale(0); opacity: 0; }
+   20% { -moz-transform: scale(0); opacity: .1; }
+   40% { -moz-transform: scale(.1); opacity: .3; }
+   60% { -moz-transform: scale(.5); opacity: .5; }
+   100% { -moz-transform: scale(1); opacity: 0; }
+ }
+
+ /* webkit */
+ @-webkit-keyframes pulse {
+   0% { -webkit-transform: scale(0); opacity: 0; }
+   20% { -webkit-transform: scale(0); opacity: .1; }
+   40% { -webkit-transform: scale(.1); opacity: .3; }
+   60% { -webkit-transform: scale(.5); opacity: .5; }
+   100% { -webkit-transform: scale(1); opacity: 0; }
+ }
+
+
+
 
 @media (max-width:480px){
 	.featured>[class*="span"]{
@@ -4890,8 +5009,50 @@ footer p{
 		display:inline;
 
 	}
+	
+	#lisbon{
+		left: 36.5%; 
+		top: 24.3%;
+	}
+
+	#copenhagen{
+		left: 42.3%; 
+		top: 14.3%;
+	}
+
+	#london{
+		left: 39.5%; 
+		top: 16.5%;
+	}
+
+	#chicago{
+		left: 14.7%; 
+		top: 23.3%;
+	}
+
+	#ventura{
+		left: 4.5%; 
+		top: 28.3%;
+	}
+
+	#philadelphia{
+		left: 18.7%; 
+		top: 24.3%;
+	}
+
+	#salvador{
+		left: 27.5%; 
+		top: 62.3%;
+	}
+
+	#florianopolis{
+		left: 24.7%; 
+		top: 72.7%;
+	}
+	
 
 }
+
 @media (min-width:481px) and (max-width:767px){
 	.featured>.span3{
 		width:48.93617020799999%;
@@ -4914,7 +5075,7 @@ footer p{
 		font-size:32px;
 
 	}
-
+	
 }
 @media (min-width:768px) and (max-width:979px){
 

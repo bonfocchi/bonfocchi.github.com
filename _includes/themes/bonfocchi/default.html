@@ -24,6 +24,21 @@
 	    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
 	    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 	  -->
+		
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+	
+		<script>
+		$(document).ready(function(){
+			$(".mapMark").hover(function() {
+				$(this).find("em").stop(true, true).animate({opacity: "show", top: "-50"}, "slow");
+				$(".mapMark").not(this).hide();
+				}, function() {
+					$(this).find("em").animate({opacity: "hide", top: "-60"}, "fast", function() {
+					    $(".mapMark").not(this).show();
+					  });
+				});
+		});
+		</script>
 	</head>
 
 	<body>
