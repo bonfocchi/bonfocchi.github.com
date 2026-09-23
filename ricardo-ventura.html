@@ -1,0 +1,743 @@
+<title>Ricardo Ventura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#faf4e4;
+    --white:#ffffff;
+    --ink:#0e0e0e;
+    --ink-soft:#57534a;
+    --ink-faint:#8a8272;
+    --ink-navy:#1b2b3a;
+    --ink-navy-soft:#3d5164;
+    --line:#e7dfcb;
+    --accent:#e8694a;
+    --accent-gold:#f2c46d;
+    --accent-deep:#c94f32;
+    --accent-soft:#f7ddc9;
+    --amber-ink:#a8681c;
+    --blue-1:#2178c4;
+    --blue-2:#155c9e;
+    --blue-3:#0e4a84;
+    --blue-light-1:#dceefa;
+    --blue-light-2:#c4e2f4;
+    --cream-on-blue:#faf4e4;
+    --offwhite-on-blue:#f5f0e8;
+    --card-shadow: 0 1px 2px rgba(25,21,16,.04), 0 12px 28px -16px rgba(25,21,16,.18);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:"DM Sans", system-ui, -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Lora", Georgia, serif;
+    font-weight:700;
+    margin:0;
+    text-wrap:balance;
+  }
+  h2,h3{font-weight:600;}
+  p{margin:0;}
+  a{color:inherit;}
+  .wrap{max-width:1120px; margin:0 auto; padding-inline:24px;}
+  .prose{max-width:640px;}
+  .section{padding-block:88px;}
+  @media (max-width:720px){ .section{padding-block:56px;} }
+
+  .topbar{height:3px; background:linear-gradient(90deg, var(--accent), var(--accent-gold));}
+
+  /* header */
+  header.site{
+    position:sticky; top:env(safe-area-inset-top,0px);
+    z-index:20;
+    background:color-mix(in srgb, var(--white) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:16px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:"Lora",serif; font-weight:600; font-size:1.05rem;
+    letter-spacing:.01em; color:var(--ink);
+  }
+  .brand .mark{
+    width:30px; height:30px; border-radius:8px;
+    background:var(--accent); color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Lora",serif; font-style:italic; font-weight:600; font-size:32px;
+    overflow:visible;
+  }
+  .nav-links{display:flex; align-items:center; gap:28px;}
+  .nav-links a{
+    font-size:.92rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .nav-links a:hover{color:var(--ink);}
+  @media (max-width:640px){ .nav-links a.hide-mobile{display:none;} }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 22px; border-radius:10px;
+    font-size:.92rem; font-weight:500;
+    text-decoration:none; border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:var(--cream);}
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink-faint);}
+
+  /* hero */
+  .hero{
+    position:relative; overflow:hidden;
+    padding-block: 84px 96px; min-height:480px;
+    background:var(--white); color:var(--ink);
+    display:flex; align-items:center;
+  }
+  @media (max-width:720px){ .hero{min-height:420px; padding-block:64px 72px;} }
+  .hero-globe-wrap{position:absolute; inset:0; z-index:0; pointer-events:none;}
+  #globeCanvas{width:100%; height:100%; display:block; pointer-events:auto; cursor:default;}
+  .globe-tooltip{
+    position:absolute; z-index:3; pointer-events:none;
+    transform:translate(-50%, calc(-100% - 12px));
+    background:var(--ink); color:var(--cream);
+    font-family:"DM Sans",sans-serif; font-weight:500; font-size:.78rem;
+    padding:5px 10px; border-radius:7px; white-space:nowrap;
+    box-shadow:0 6px 16px rgba(14,14,14,.18);
+    opacity:0; transition:opacity .12s ease;
+  }
+  .globe-tooltip::after{
+    content:""; position:absolute; left:50%; top:100%;
+    transform:translateX(-50%); border:5px solid transparent;
+    border-top-color:var(--ink);
+  }
+  .globe-tooltip.visible{opacity:1;}
+  .hero-fade{
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(90deg, var(--white) 0%, var(--white) 40%, rgba(255,255,255,.72) 58%, rgba(255,255,255,0) 80%);
+  }
+  .hero-inner{position:relative; z-index:2; width:100%; pointer-events:none;}
+  .hero-inner a{pointer-events:auto;}
+  .hero-copy{max-width:600px;}
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"DM Sans",sans-serif; font-weight:500; font-size:.82rem; letter-spacing:.04em;
+    text-transform:uppercase; color:var(--ink-faint);
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--accent);}
+
+  .hero h1{
+    font-size:clamp(2.2rem, 4.6vw, 3.6rem);
+    line-height:1.1; color:var(--ink);
+  }
+  .hero h1 .strike{
+    color:var(--ink-faint); font-style:normal; font-weight:500;
+    display:block; font-size:.42em; letter-spacing:.03em;
+  }
+  .hero h1 .headline{display:block; margin-top:10px;}
+  .hero h1 .headline em{
+    color:var(--accent); font-style:italic;
+  }
+
+  .hero-sub{
+    margin-top:24px; font-size:1.08rem; color:var(--ink-soft); max-width:52ch;
+  }
+  .hero-cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:32px;}
+
+  /* alternating section bg */
+  .bg-cream{background:var(--cream); color:var(--ink);}
+
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"DM Sans",sans-serif; font-weight:500; font-size:.82rem; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--accent); margin-bottom:14px;
+  }
+  .kicker::before{content:""; width:18px; height:1px; background:currentColor; opacity:.6;}
+  .kicker.on-navy{color:var(--blue-2);}
+  .kicker.on-blue{color:var(--accent-gold);}
+  .section h2{font-size:clamp(1.6rem,3vw,2.15rem); margin-bottom:22px; color:var(--ink);}
+  .section h2 em{font-style:italic; color:var(--accent);}
+
+  .bio-grid{display:grid; grid-template-columns: .8fr 1.2fr; gap:48px;}
+  @media (max-width:820px){ .bio-grid{grid-template-columns:1fr; gap:20px;} }
+  .bio-grid p + p{margin-top:16px;}
+  .bio-grid p{color:var(--ink-soft); font-size:1.03rem;}
+  .bio-grid strong{color:var(--ink); font-weight:600;}
+
+  /* two-tier cards, matching the reference's problem/reveal card pattern */
+  .card-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:8px;
+  }
+  @media (max-width:880px){ .card-grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px;
+    box-shadow:var(--card-shadow); overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .card-top{padding:26px 24px 22px;}
+  .card .icon{
+    width:42px; height:42px; border-radius:10px; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+  }
+  .card .icon svg{width:21px; height:21px; stroke:var(--accent-deep);}
+  .card h3{font-size:1.08rem; margin-bottom:8px; color:var(--ink);}
+  .card-top p{color:var(--ink-faint); font-size:.88rem;}
+  .card-answer{
+    flex:1 0 auto; display:flex; flex-direction:column; justify-content:flex-start;
+    padding:22px 24px 24px;
+    background:
+      radial-gradient(130% 80% at 18% 0%, rgba(255,255,255,.22), rgba(0,0,0,0) 58%),
+      linear-gradient(155deg, var(--accent) 0%, var(--accent-deep) 100%);
+  }
+  .card-answer .tag{
+    font-family:"DM Sans",sans-serif; font-weight:600; font-size:.7rem; letter-spacing:.09em;
+    text-transform:uppercase; color:rgba(250,244,228,.75); display:block; margin-bottom:10px;
+  }
+  .card-answer .answer-line{
+    font-family:"Lora",serif; font-weight:600; font-size:1.14rem; color:var(--cream-on-blue);
+    margin-bottom:8px;
+  }
+  .card-answer .answer-line em{font-style:italic; color:var(--accent-gold);}
+  .card-answer .answer-body{font-size:.9rem; color:rgba(250,244,228,.86);}
+
+  /* deep-blue section, matching the reference's Method section */
+  .section-deep{
+    background:linear-gradient(180deg, var(--blue-1) 0%, var(--blue-2) 55%, var(--blue-3) 100%);
+    color:var(--offwhite-on-blue);
+  }
+  .section-deep h2{color:var(--cream-on-blue);}
+  .section-deep h2 em{color:var(--accent-gold); font-style:italic;}
+  .section-intro{color:var(--offwhite-on-blue); opacity:.88; max-width:60ch; font-size:1.02rem;}
+
+  .timeline{margin-top:36px;}
+  .timeline.on-blue{border-top:1px solid rgba(250,244,228,.18);}
+  .timeline:not(.on-blue){border-top:1px solid var(--line);}
+  .trow{
+    display:grid; grid-template-columns: 130px 1fr 1.3fr; gap:20px;
+    padding-block:20px;
+  }
+  .timeline.on-blue .trow{border-bottom:1px solid rgba(250,244,228,.18);}
+  .timeline:not(.on-blue) .trow{border-bottom:1px solid var(--line);}
+  @media (max-width:760px){
+    .trow{grid-template-columns:1fr; gap:6px; padding-block:18px;}
+  }
+  .trow .dates{
+    font-family:"DM Sans",sans-serif; font-weight:600; font-size:.8rem; white-space:nowrap;
+    padding-top:2px; letter-spacing:.03em; color:var(--accent-gold);
+  }
+  .trow .role{font-family:"Lora",serif; font-weight:600; font-size:1.03rem; color:var(--cream-on-blue);}
+  .trow .company{color:var(--accent-gold); font-weight:500; font-size:.92rem;}
+  .trow .loc{font-size:.8rem; color:rgba(250,244,228,.55); margin-top:3px;}
+  .trow .desc{color:rgba(245,240,232,.85); font-size:.93rem; padding-top:2px;}
+  .trow .tag-muted{font-size:.8em; color:rgba(250,244,228,.55);}
+
+  /* light-blue section, matching the reference's Takeaways section */
+  .section-light{
+    background:linear-gradient(180deg, var(--blue-light-1), var(--blue-light-2));
+    color:var(--ink-navy);
+  }
+  .section-light h2{color:var(--ink-navy);}
+  .section-light .section-intro{color:var(--ink-navy-soft); opacity:1;}
+
+  .skill-group{margin-top:34px;}
+  .skill-group:first-child{margin-top:8px;}
+  .skill-group h4{
+    font-family:"Lora",serif; font-style:italic; font-weight:600; font-size:1.2rem;
+    margin-bottom:14px;
+  }
+  .skill-group.c-coral h4{color:var(--accent);}
+  .skill-group.c-blue h4{color:var(--blue-2);}
+  .skill-group.c-amber h4{color:var(--amber-ink);}
+  .chips{display:flex; flex-wrap:wrap; gap:9px;}
+  .chip{
+    border:1px solid rgba(27,43,58,.14); background:rgba(255,255,255,.55);
+    border-radius:100px; padding:7px 14px; font-size:.86rem; color:var(--ink-navy-soft);
+  }
+
+  /* footer facts (cream) */
+  .fact-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:40px;}
+  @media (max-width:760px){ .fact-grid{grid-template-columns:1fr; gap:28px;} }
+  .fact-grid h4{
+    font-family:"DM Sans",sans-serif; font-size:.78rem; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--ink-faint); margin-bottom:12px; font-weight:500;
+  }
+  .fact-grid .item{margin-bottom:10px;}
+  .fact-grid .item b{display:block; font-size:.96rem; color:var(--ink);}
+  .fact-grid .item span{font-size:.84rem; color:var(--ink-faint);}
+  .lang-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-size:.94rem;}
+  .lang-bar{width:90px; height:5px; border-radius:3px; background:var(--line); position:relative; overflow:hidden;}
+  .lang-bar i{position:absolute; left:0; top:0; bottom:0; background:var(--accent); border-radius:3px;}
+
+  /* footer cta — coral gradient, matching the reference's card-answer / hero-adjacent coral treatment */
+  footer.cta{
+    background:
+      radial-gradient(130% 80% at 18% 0%, rgba(255,255,255,.16), rgba(0,0,0,0) 58%),
+      linear-gradient(155deg, var(--accent) 0%, var(--accent-deep) 100%);
+    color:var(--cream-on-blue);
+    padding-block:80px;
+  }
+  footer.cta h2{color:var(--cream-on-blue); font-size:clamp(1.8rem,4vw,2.6rem);}
+  footer.cta h2 em{color:var(--accent-gold); font-style:italic;}
+  footer.cta .sub{color:rgba(250,244,228,.85); margin-top:14px; max-width:48ch; font-size:1.05rem;}
+  footer.cta .cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-top:34px;}
+  footer.cta .btn-primary{background:var(--cream-on-blue); color:var(--accent-deep);}
+  footer.cta .btn-ghost{border-color:rgba(250,244,228,.4); color:var(--cream-on-blue);}
+  footer.cta .btn-ghost:hover{border-color:rgba(250,244,228,.75);}
+  .foot-meta{
+    margin-top:56px; padding-top:24px; border-top:1px solid rgba(250,244,228,.25);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:.82rem; color:rgba(250,244,228,.75);
+  }
+
+  ::selection{background:var(--accent-soft); color:var(--accent-deep);}
+</style>
+
+<div class="topbar"></div>
+<header class="site">
+  <div class="wrap nav">
+    <div class="brand"><span class="mark">B</span> Bonfocchi</div>
+    <nav class="nav-links">
+      <a href="#work" class="hide-mobile">Experience</a>
+      <a href="#skills" class="hide-mobile">Skills</a>
+      <a href="mailto:hey@bonfocchi.com" class="btn btn-primary" style="padding:9px 18px; color:#ffffff;">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-globe-wrap" aria-hidden="true">
+    <canvas id="globeCanvas"></canvas>
+  </div>
+  <div class="hero-fade" aria-hidden="true"></div>
+  <div id="globeTooltip" class="globe-tooltip" role="tooltip"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1>
+        <span class="strike">Product Leader &amp; Former CTO / Founder</span>
+        <span class="headline">I build products and the teams, systems, and strategy that carry them.</span>
+      </h1>
+      <p class="hero-sub">I'm Ricardo Bonfocchi Ventura. Eighteen years working across engineering, product, and leadership, from freelance development in Lisbon to founding and leading technical teams internationally.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-cream">
+  <div class="wrap bio-grid">
+    <div>
+      <span class="kicker">About</span>
+      <h2>The shape of the work</h2>
+    </div>
+    <div class="prose">
+      <p>I started as a freelance full-stack developer in Lisbon in 2008, shipping everything from Flash microsites to payment integrations for clients who ranged from solo founders to corporate giants. That range never really went away — I've since been <strong>the person writing the architecture</strong> and <strong>the person setting the go-to-market strategy</strong>, often in the same quarter.</p>
+      <p>I've relocated to Tokyo twice: first with <strong>Hivelocity</strong>, then years later as CTO of <strong>Heartcore</strong>, where I recruited and led an engineering team, chose Rust for a new enterprise product where performance and memory safety mattered, and managed Gartner analyst relations on the side. Working from Lisbon, I co-founded <strong>Crably</strong>, a multi-tenant CMS headquartered in Denmark that I built solo from zero to customers in ten-plus countries. As CTO of <strong>Colmena</strong>, I architected an HR and benefits platform from scratch and stayed through its later acquisition by Coverflex; I also spent time on <strong>Capdesk</strong>'s Denmark-based team, building a zero-to-one VC platform module on Rails.</p>
+      <p>Most recently, working remotely from Lisbon for <strong>Publitas</strong> (Netherlands), I've been back in the code full-time, benchmarking Rails and Rust APIs while driving engineering-wide improvements in testing and build reliability. The work sits at the intersection of technical depth and organizational leverage: solving problems in the stack while establishing practices that scale across the engineering team. <strong>Close enough to strategy to ask why, close enough to the stack to ship the answer.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="what">
+  <div class="wrap">
+    <span class="kicker">What I bring</span>
+    <h2>Executive judgment, <em>engineer's</em> hands</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-top">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+          <h3>Zero-to-one platforms, built to last</h3>
+          <p>From an empty repo to a system a team can trust.</p>
+        </div>
+        <div class="card-answer">
+          <span class="tag">In practice</span>
+          <p class="answer-line">Architecture first, then the <em>roadmap</em>.</p>
+          <p class="answer-body">I've built platforms from scratch at Colmena and Crably, and know what a codebase needs to look like once someone else depends on it.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg></div>
+          <h3>Teams led across three continents</h3>
+          <p>On-site in Tokyo; remote-first everywhere since.</p>
+        </div>
+        <div class="card-answer">
+          <span class="tag">The reach</span>
+          <p class="answer-line">One relocation. <em>Four</em> countries led remotely.</p>
+          <p class="answer-body">Based in Lisbon since 2008, leading engineering and product for teams in Japan, Denmark, the Netherlands, and the US.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6 2 12l6 6M16 6l6 6-6 6M10 4 8 20"/></svg></div>
+          <h3>Fluent from terminal to boardroom</h3>
+          <p>Rust performance work and Gartner briefings, same week.</p>
+        </div>
+        <div class="card-answer">
+          <span class="tag">The range</span>
+          <p class="answer-line">Architecture, GTM, and <em>M&amp;A</em> advisory.</p>
+          <p class="answer-body">I move between the two without a handoff, which tends to save everyone a meeting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-deep" id="work">
+  <div class="wrap">
+    <span class="kicker on-blue">Experience</span>
+    <h2>Eighteen years, <em>condensed</em>.</h2>
+    <p class="section-intro">From freelance developer to CTO twice over — every role, in order.</p>
+    <div class="timeline on-blue">
+      <div class="trow">
+        <div class="dates">Since 2025</div>
+        <div><div class="role">Senior Backend &amp; Platform Engineer</div><div class="company">Publitas</div><div class="loc">Portugal, Remote</div></div>
+        <div class="desc">Optimized critical Rails, Rust, and JS APIs and standardized flaky-test diagnostics across the engineering org.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2024</div>
+        <div><div class="role">Head of Product</div><div class="company">Heartcore Enterprises, Inc.</div><div class="loc">Portugal, Remote</div></div>
+        <div class="desc">Led roadmap and GTM/monetization strategy for a distributed, multicultural product team.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2022 — 2024</div>
+        <div><div class="role">CTO</div><div class="company">Heartcore, Inc. (Japan)</div><div class="loc">Tokyo, Japan</div></div>
+        <div class="desc">Built a new enterprise product's technical foundation from zero on Rust; recruited and relocated a cross-cultural team; managed Gartner relations and M&amp;A strategy.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2022</div>
+        <div><div class="role">Senior Software Engineer</div><div class="company">Capdesk <span class="tag-muted">(acq. Carta.com)</span></div><div class="loc">Portugal, Remote</div></div>
+        <div class="desc">Principal engineer building a zero-to-one VC platform module on Rails, which didn't ship, ahead of the Carta.com acquisition.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2019 — 2021</div>
+        <div><div class="role">CTO</div><div class="company">Colmena <span class="tag-muted">(acq. Coverflex.com)</span></div><div class="loc">Portugal, Remote</div></div>
+        <div class="desc">Architected and shipped a multi-tenant HR, benefits, and insurance platform from scratch; led technical execution through acquisition.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2018 — 2019</div>
+        <div><div class="role">Tech Lead Engineer</div><div class="company">Hivelocity Inc. (Japan)</div><div class="loc">Tokyo, Japan</div></div>
+        <div class="desc">Managed the product engineering team and optimized process flow.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2017 — 2018</div>
+        <div><div class="role">Product &amp; Project Manager, Full-Stack Engineer</div><div class="company">Hivelocity Inc. (Japan)</div><div class="loc">Tokyo, Japan</div></div>
+        <div class="desc">Concept and UX for a new automated service; led a multicultural, partly remote team; shipped critical APIs.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2016 — 2017</div>
+        <div><div class="role">Full Stack Developer &amp; Solution Engineer</div><div class="company">Hivelocity Inc. (Japan)</div><div class="loc">Tokyo, Japan</div></div>
+        <div class="desc">Built CRM deployment flows and a ReactJS/Redux streaming app.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2014 — 2019</div>
+        <div><div class="role">Co-Founder &amp; Managing Director</div><div class="company">Crably IVS <span class="tag-muted">(Danish startup)</span></div><div class="loc">Portugal, Remote</div></div>
+        <div class="desc">Sole architect of a multi-tenant CMS on Rails, Postgres, and Liquid — scaled from zero to customers in 10+ countries.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2010 — 2016</div>
+        <div><div class="role">Web Producer &amp; Full-Stack Consultant</div><div class="company">Freelance</div><div class="loc">Portugal, Remote</div></div>
+        <div class="desc">Strategy and implementation for clients including TheSurfShare and MySiteAuditor, across Rails, PHP, and WordPress.</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2008 — 2010</div>
+        <div><div class="role">Lead Developer</div><div class="company">Pixel Design &amp; New Media</div><div class="loc">Lisbon, Portugal</div></div>
+        <div class="desc">Full-stack web engineering and Flash/Flex RIAs for clients from individuals to corporates.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light" id="skills">
+  <div class="wrap">
+    <span class="kicker on-navy">Skills</span>
+    <h2>What I work in</h2>
+    <p class="section-intro">Three registers, used together more often than separately.</p>
+    <div class="skill-group c-coral">
+      <h4>Leadership &amp; Product</h4>
+      <div class="chips">
+        <span class="chip">Executive &amp; Product Leadership</span>
+        <span class="chip">Product Strategy</span>
+        <span class="chip">Venture Building</span>
+        <span class="chip">Team &amp; Engineering Management</span>
+        <span class="chip">Mentoring &amp; Coaching</span>
+        <span class="chip">GTM Strategy</span>
+        <span class="chip">Cross-Functional Leadership</span>
+      </div>
+    </div>
+    <div class="skill-group c-blue">
+      <h4>Architecture &amp; Technical Strategy</h4>
+      <div class="chips">
+        <span class="chip">System Architecture</span>
+        <span class="chip">Machine Learning</span>
+        <span class="chip">Deep Learning</span>
+        <span class="chip">AI &amp; Neural Networks</span>
+        <span class="chip">Technical Roadmap &amp; Governance</span>
+        <span class="chip">Cloud Infrastructure</span>
+        <span class="chip">DevOps Strategy</span>
+      </div>
+    </div>
+    <div class="skill-group c-amber">
+      <h4>Tech Stack</h4>
+      <div class="chips">
+        <span class="chip">Ruby / Rails</span>
+        <span class="chip">Rust</span>
+        <span class="chip">JavaScript / React</span>
+        <span class="chip">Python</span>
+        <span class="chip">PHP / Laravel</span>
+        <span class="chip">Java</span>
+        <span class="chip">C</span>
+        <span class="chip">Docker</span>
+        <span class="chip">Git</span>
+        <span class="chip">Unix / Linux</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-cream">
+  <div class="wrap fact-grid">
+    <div>
+      <h4>Education</h4>
+      <div class="item">
+        <b>BSc, Communication Networks Engineering</b>
+        <span>Instituto Superior Técnico, University of Lisbon — 2010</span>
+      </div>
+    </div>
+    <div>
+      <h4>Certifications</h4>
+      <div class="item"><b>Neural Networks &amp; Deep Learning</b><span>DeepLearning.AI · 2026</span></div>
+      <div class="item"><b>Machine Learning Specialization</b><span>Stanford University / DeepLearning.AI · 2026</span></div>
+      <div class="item"><b>Entrepreneurship, Scientific &amp; Technological Base</b><span>University of Lisbon</span></div>
+    </div>
+    <div>
+      <h4>Languages</h4>
+      <div class="lang-row"><span>English</span><div class="lang-bar"><i style="width:100%"></i></div></div>
+      <div class="lang-row"><span>Portuguese</span><div class="lang-bar"><i style="width:100%"></i></div></div>
+      <div class="lang-row"><span>Japanese</span><div class="lang-bar"><i style="width:24%"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="cta" id="contact">
+  <div class="wrap">
+    <span class="kicker" style="color:rgba(250,244,228,.8);">Get in touch</span>
+    <h2>Let's talk about what you're <em>building</em>.</h2>
+    <p class="sub">Open to product leadership, CTO, and senior engineering roles — remote-first, based in Lisbon, willing to relocate for the right team.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:hey@bonfocchi.com">Get in Touch</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/bonfocchi" target="_blank" rel="noopener">LinkedIn ↗</a>    </div>
+    <div class="foot-meta">
+      <span>Copyright © 2026 Ricardo Bonfocchi Ventura. All rights reserved.</span>
+      <span>Portuguese · English · 日本語（初心者）</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.9/datamaps.world.min.js"></script>
+<script>
+(function(){
+  try {
+    if (!window.d3 || !window.topojson || !window.Datamap) return;
+    var canvas = document.getElementById('globeCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    var wrap = canvas.parentElement;
+    var tooltip = document.getElementById('globeTooltip');
+
+    var topology = window.Datamap.prototype.worldTopo;
+    var world = window.topojson.feature(topology, topology.objects.world);
+    var graticule = d3.geoGraticule().step([20, 20])();
+
+    var CITIES = [
+      {name:'Lisbon', lat:38.72, lon:-9.14, home:true},
+      {name:'Copenhagen', lat:55.68, lon:12.57},
+      {name:'London', lat:51.51, lon:-0.13},
+      {name:'Amsterdam', lat:52.37, lon:4.90},
+      {name:'Chicago', lat:41.88, lon:-87.63},
+      {name:'Philadelphia', lat:39.95, lon:-75.16},
+      {name:'Ventura, CA', lat:34.28, lon:-119.30},
+      {name:'Los Altos, CA', lat:37.39, lon:-122.11},
+      {name:'Salvador', lat:-12.97, lon:-38.51},
+      {name:'Florianópolis', lat:-27.60, lon:-48.55},
+      {name:'Tokyo', lat:35.68, lon:139.69},
+      {name:'Myanmar', lat:16.87, lon:96.20},
+      {name:'Da Nang', lat:16.05, lon:108.20}
+    ];
+    var home = CITIES[0];
+    var others = CITIES.slice(1);
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var TILT = -12;        // fixed axial tilt (roll) — reduced, so more of the northern hemisphere reads clearly
+    var SPIN_DEG_S = 5;    // spin speed, degrees/second, around the true polar axis
+    var LAMBDA0 = 53.5;    // initial spin so Europe/the Americas face forward
+    var STEP_MS = 2000;    // a new, visible-side-only connection every two seconds
+
+    var projection = d3.geoOrthographic().clipAngle(90).precision(0.3);
+    var path = d3.geoPath(projection, ctx);
+    var dpr = 1;
+    var pins = []; // updated each draw(): [{name, x, y (CSS px)}]
+
+    function resize(){
+      var rect = wrap.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(rect.width*dpr));
+      canvas.height = Math.max(1, Math.round(rect.height*dpr));
+      var W = canvas.width, H = canvas.height;
+      var cx = W*0.72, cy = H*0.46, R = Math.min(W,H)*0.42;
+      projection.scale(R).translate([cx, cy]);
+    }
+
+    function visible(lonlat){
+      var r = projection.rotate();
+      var center = [-r[0], -r[1]];
+      return d3.geoDistance(lonlat, center) < 1.52; // ~87°, matches the horizon fade
+    }
+
+    var lastTick = -1;
+    var connPair = null; // [cityA, cityB], both guaranteed visible when chosen
+
+    function pickConnection(tick){
+      if (tick === lastTick) return;
+      lastTick = tick;
+      var visList = CITIES.filter(function(c){ return visible([c.lon, c.lat]); });
+      if (visList.length < 2){ connPair = null; return; }
+      var homeVis = null, restVis = [];
+      visList.forEach(function(c){ if (c.home) homeVis = c; else restVis.push(c); });
+      if (homeVis && restVis.length){
+        connPair = [homeVis, restVis[tick % restVis.length]];
+      } else {
+        var i0 = tick % visList.length;
+        connPair = [visList[i0], visList[(i0+1) % visList.length]];
+      }
+    }
+
+    function draw(tick){
+      pickConnection(tick);
+      var W = canvas.width, H = canvas.height;
+      ctx.clearRect(0,0,W,H);
+      if (W < 4 || H < 4) return;
+      var t = projection.translate(), cx = t[0], cy = t[1];
+      var R = projection.scale();
+
+      var grad = ctx.createRadialGradient(cx-R*0.3, cy-R*0.3, R*0.1, cx, cy, R);
+      grad.addColorStop(0, 'rgba(220,238,250,0.65)');
+      grad.addColorStop(1, 'rgba(196,226,244,0.35)');
+      ctx.beginPath(); path({type:'Sphere'});
+      ctx.fillStyle = grad; ctx.fill();
+
+      ctx.beginPath(); path(graticule);
+      ctx.strokeStyle = 'rgba(21,92,158,0.16)';
+      ctx.lineWidth = Math.max(0.5, R*0.0022);
+      ctx.stroke();
+
+      ctx.beginPath(); path(world);
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(21,92,158,0.55)';
+      ctx.lineWidth = Math.max(0.6, R*0.0032);
+      ctx.stroke();
+
+      ctx.beginPath(); path({type:'Sphere'});
+      ctx.strokeStyle = 'rgba(21,92,158,0.4)';
+      ctx.lineWidth = Math.max(1, R*0.006);
+      ctx.stroke();
+
+      if (connPair){
+        var a = [connPair[0].lon, connPair[0].lat], b = [connPair[1].lon, connPair[1].lat];
+        if (visible(a) && visible(b)){
+          var interp = d3.geoInterpolate(a, b);
+          var line = {type:'LineString', coordinates: d3.range(0, 1.001, 1/64).map(interp)};
+          ctx.beginPath(); path(line);
+          ctx.strokeStyle = 'rgba(242,196,109,0.85)';
+          ctx.lineWidth = Math.max(1, R*0.006);
+          ctx.stroke();
+        }
+      }
+
+      pins = [];
+      CITIES.forEach(function(c){
+        var ll = [c.lon, c.lat];
+        if (!visible(ll)) return;
+        var xy = projection(ll);
+        if (!xy) return;
+        var r = c.home ? R*0.03 : R*0.022;
+        ctx.beginPath();
+        ctx.arc(xy[0], xy[1], r*2.4, 0, Math.PI*2);
+        ctx.fillStyle = c.home ? 'rgba(232,105,74,0.28)' : 'rgba(232,105,74,0.22)';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(xy[0], xy[1], r, 0, Math.PI*2);
+        ctx.fillStyle = '#e8694a';
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = Math.max(0.6, R*0.003);
+        ctx.fill();
+        ctx.stroke();
+        pins.push({name: c.name, x: xy[0]/dpr, y: xy[1]/dpr});
+      });
+    }
+
+    var start = null;
+
+    function frame(ts){
+      if (start === null) start = ts;
+      var elapsed = ts - start;
+      projection.rotate([LAMBDA0 + (elapsed/1000)*SPIN_DEG_S, 0, TILT]);
+      var tick = Math.floor(elapsed/STEP_MS);
+      draw(tick);
+      requestAnimationFrame(frame);
+    }
+
+    resize();
+    projection.rotate([LAMBDA0, 0, TILT]);
+    draw(0);
+    if (!reduceMotion){
+      requestAnimationFrame(frame);
+    }
+
+    canvas.addEventListener('mousemove', function(e){
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      var found = null, bestD = 14;
+      pins.forEach(function(p){
+        var d = Math.hypot(p.x-mx, p.y-my);
+        if (d < bestD){ bestD = d; found = p; }
+      });
+      if (found){
+        tooltip.textContent = found.name;
+        tooltip.style.left = found.x + 'px';
+        tooltip.style.top = found.y + 'px';
+        tooltip.classList.add('visible');
+        canvas.style.cursor = 'pointer';
+      } else {
+        tooltip.classList.remove('visible');
+        canvas.style.cursor = 'default';
+      }
+    });
+    canvas.addEventListener('mouseleave', function(){ tooltip.classList.remove('visible'); });
+
+    var resizeTimer;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function(){ resize(); draw(0); }, 100);
+    });
+    if (window.ResizeObserver){
+      var ro = new ResizeObserver(function(){ resize(); draw(0); });
+      ro.observe(wrap);
+    }
+  } catch(e) { /* decorative only — hero works fine without it */ }
+})();
+</script>
