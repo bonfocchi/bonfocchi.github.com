@@ -597,7 +597,11 @@
       canvas.width = Math.max(1, Math.round(rect.width*dpr));
       canvas.height = Math.max(1, Math.round(rect.height*dpr));
       var W = canvas.width, H = canvas.height;
-      var cx = W*0.72, cy = H*0.46, R = Math.min(W,H)*0.42;
+      // keep the globe positioned relative to the same 1120px content column
+      // every other section uses, instead of the full (possibly very wide) hero width
+      var contentW = Math.min(W, 1120*dpr);
+      var leftOffset = (W - contentW) / 2;
+      var cx = leftOffset + contentW*0.72, cy = H*0.46, R = Math.min(contentW,H)*0.42;
       projection.scale(R).translate([cx, cy]);
     }
 
