@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ricardo Ventura</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#faf4e4;
+    --white:#ffffff;
+    --ink:#0e0e0e;
+    --ink-soft:#57534a;
+    --ink-faint:#8a8272;
+    --ink-navy:#1b2b3a;
+    --ink-navy-soft:#3d5164;
+    --line:#e7dfcb;
+    --accent:#e8694a;
+    --accent-gold:#f2c46d;
+    --accent-deep:#c94f32;
+    --accent-soft:#f7ddc9;
+    --amber-ink:#a8681c;
+    --blue-1:#2178c4;
+    --blue-2:#155c9e;
+    --blue-3:#0e4a84;
+    --blue-light-1:#dceefa;
+    --blue-light-2:#c4e2f4;
+    --cream-on-blue:#faf4e4;
+    --offwhite-on-blue:#f5f0e8;
+    --card-shadow: 0 1px 2px rgba(25,21,16,.04), 0 12px 28px -16px rgba(25,21,16,.18);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--white);
+    color:var(--ink);
+    font-family:"DM Sans", "Noto Sans JP", system-ui, -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.8;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Lora", "Noto Serif JP", Georgia, serif;
+    font-weight:700;
+    margin:0;
+    text-wrap:balance;
+  }
+  h2,h3{font-weight:600;}
+  p{margin:0;}
+  a{color:inherit;}
+  .wrap{max-width:1120px; margin:0 auto; padding-inline:24px;}
+  .prose{max-width:640px;}
+  .section{padding-block:88px;}
+  @media (max-width:720px){ .section{padding-block:56px;} }
+
+  .topbar{height:3px; background:linear-gradient(90deg, var(--accent), var(--accent-gold));}
+
+  /* header */
+  header.site{
+    position:sticky; top:env(safe-area-inset-top,0px);
+    z-index:20;
+    background:color-mix(in srgb, var(--white) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:16px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:"Lora",serif; font-weight:600; font-size:1.05rem;
+    letter-spacing:.01em; color:var(--ink); text-decoration:none;
+  }
+  .brand .mark{
+    width:30px; height:30px; border-radius:8px;
+    background:var(--accent); color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-family:"Lora",serif; font-style:italic; font-weight:600; font-size:32px;
+    overflow:visible;
+  }
+  .nav-links{display:flex; align-items:center; gap:28px;}
+  .nav-links a{
+    font-size:.92rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .nav-links a:hover{color:var(--ink);}
+  @media (max-width:640px){ .nav-links a.hide-mobile{display:none;} }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 22px; border-radius:10px;
+    font-size:.92rem; font-weight:500;
+    text-decoration:none; border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:var(--cream);}
+  .btn-primary:hover{filter:brightness(1.06);}
+  .btn-ghost{border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink-faint);}
+
+  /* hero */
+  .hero{
+    position:relative; overflow:hidden;
+    padding-block: 84px 96px; min-height:480px;
+    background:var(--white); color:var(--ink);
+    display:flex; align-items:center;
+  }
+  @media (max-width:720px){ .hero{min-height:420px; padding-block:64px 72px;} }
+  .hero-globe-wrap{position:absolute; inset:0; z-index:0; pointer-events:none;}
+  #globeCanvas{width:100%; height:100%; display:block; pointer-events:auto; cursor:default;}
+  .globe-tooltip{
+    position:absolute; z-index:3; pointer-events:none;
+    transform:translate(-50%, calc(-100% - 12px));
+    background:var(--ink); color:var(--cream);
+    font-family:"DM Sans","Noto Sans JP",sans-serif; font-weight:500; font-size:.78rem;
+    padding:5px 10px; border-radius:7px; white-space:nowrap;
+    box-shadow:0 6px 16px rgba(14,14,14,.18);
+    opacity:0; transition:opacity .12s ease;
+  }
+  .globe-tooltip::after{
+    content:""; position:absolute; left:50%; top:100%;
+    transform:translateX(-50%); border:5px solid transparent;
+    border-top-color:var(--ink);
+  }
+  .globe-tooltip.visible{opacity:1;}
+  .hero-fade{
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(90deg, var(--white) 0%, var(--white) 40%, rgba(255,255,255,.72) 58%, rgba(255,255,255,0) 80%);
+  }
+  .hero-inner{position:relative; z-index:2; width:100%; pointer-events:none;}
+  .hero-inner a{pointer-events:auto;}
+  .hero-copy{max-width:600px;}
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"DM Sans","Noto Sans JP",sans-serif; font-weight:500; font-size:.82rem; letter-spacing:.04em;
+    color:var(--ink-faint);
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--accent);}
+
+  .hero h1{
+    font-size:clamp(2rem, 4.4vw, 3.3rem);
+    line-height:1.35; color:var(--ink);
+  }
+  .hero h1 .strike{
+    color:var(--ink-faint); font-style:normal; font-weight:500;
+    display:block; font-size:.42em; letter-spacing:.03em;
+  }
+  .hero h1 .headline{display:block; margin-top:10px;}
+  .hero h1 .headline em{
+    color:var(--accent); font-style:italic;
+  }
+
+  .hero-sub{
+    margin-top:24px; font-size:1.05rem; color:var(--ink-soft); max-width:34em;
+  }
+  .hero-cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:32px;}
+
+  /* alternating section bg */
+  .bg-cream{background:var(--cream); color:var(--ink);}
+
+  .kicker{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:"DM Sans","Noto Sans JP",sans-serif; font-weight:500; font-size:.82rem; letter-spacing:.05em;
+    color:var(--accent); margin-bottom:14px;
+  }
+  .kicker::before{content:""; width:18px; height:1px; background:currentColor; opacity:.6;}
+  .kicker.on-navy{color:var(--blue-2);}
+  .kicker.on-blue{color:var(--accent-gold);}
+  .section h2{font-size:clamp(1.5rem,2.8vw,2rem); margin-bottom:22px; color:var(--ink);}
+  .section h2 em{font-style:italic; color:var(--accent);}
+
+  .bio-grid{display:grid; grid-template-columns: .8fr 1.2fr; gap:48px;}
+  @media (max-width:820px){ .bio-grid{grid-template-columns:1fr; gap:20px;} }
+  .bio-grid p + p{margin-top:16px;}
+  .bio-grid p{color:var(--ink-soft); font-size:1.02rem;}
+  .bio-grid strong{color:var(--ink); font-weight:600;}
+
+  /* two-tier cards, matching the reference's problem/reveal card pattern */
+  .card-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:8px;
+  }
+  @media (max-width:880px){ .card-grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px;
+    box-shadow:var(--card-shadow); overflow:hidden;
+    display:flex; flex-direction:column;
+  }
+  .card-top{padding:26px 24px 22px;}
+  .card .icon{
+    width:42px; height:42px; border-radius:10px; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+  }
+  .card .icon svg{width:21px; height:21px; stroke:var(--accent-deep);}
+  .card h3{font-size:1.04rem; margin-bottom:8px; color:var(--ink); line-height:1.5;}
+  .card-top p{color:var(--ink-faint); font-size:.86rem;}
+  .card-answer{
+    flex:1 0 auto; display:flex; flex-direction:column; justify-content:flex-start;
+    padding:22px 24px 24px;
+    background:
+      radial-gradient(130% 80% at 18% 0%, rgba(255,255,255,.22), rgba(0,0,0,0) 58%),
+      linear-gradient(155deg, var(--accent) 0%, var(--accent-deep) 100%);
+  }
+  .card-answer .tag{
+    font-family:"DM Sans","Noto Sans JP",sans-serif; font-weight:600; font-size:.7rem; letter-spacing:.09em;
+    color:rgba(250,244,228,.75); display:block; margin-bottom:10px;
+  }
+  .card-answer .answer-line{
+    font-family:"Lora","Noto Serif JP",serif; font-weight:600; font-size:1.06rem; color:var(--cream-on-blue);
+    margin-bottom:8px; line-height:1.6;
+  }
+  .card-answer .answer-line em{font-style:italic; color:var(--accent-gold);}
+  .card-answer .answer-body{font-size:.88rem; color:rgba(250,244,228,.86);}
+
+  /* deep-blue section, matching the reference's Method section */
+  .section-deep{
+    background:linear-gradient(180deg, var(--blue-1) 0%, var(--blue-2) 55%, var(--blue-3) 100%);
+    color:var(--offwhite-on-blue);
+  }
+  .section-deep h2{color:var(--cream-on-blue);}
+  .section-deep h2 em{color:var(--accent-gold); font-style:italic;}
+  .section-intro{color:var(--offwhite-on-blue); opacity:.88; max-width:38em; font-size:1rem;}
+
+  .timeline{margin-top:36px;}
+  .timeline.on-blue{border-top:1px solid rgba(250,244,228,.18);}
+  .timeline:not(.on-blue){border-top:1px solid var(--line);}
+  .trow{
+    display:grid; grid-template-columns: 150px 1fr 1.3fr; gap:20px;
+    padding-block:20px;
+  }
+  .timeline.on-blue .trow{border-bottom:1px solid rgba(250,244,228,.18);}
+  .timeline:not(.on-blue) .trow{border-bottom:1px solid var(--line);}
+  @media (max-width:760px){
+    .trow{grid-template-columns:1fr; gap:6px; padding-block:18px;}
+  }
+  .trow .dates{
+    font-family:"DM Sans","Noto Sans JP",sans-serif; font-weight:600; font-size:.8rem; white-space:nowrap;
+    padding-top:2px; letter-spacing:.03em; color:var(--accent-gold);
+  }
+  .trow .role{font-family:"Lora","Noto Serif JP",serif; font-weight:600; font-size:.98rem; color:var(--cream-on-blue); line-height:1.5;}
+  .trow .company{color:var(--accent-gold); font-weight:500; font-size:.9rem;}
+  .trow .loc{font-size:.8rem; color:rgba(250,244,228,.55); margin-top:3px;}
+  .trow .desc{color:rgba(245,240,232,.85); font-size:.9rem; padding-top:2px;}
+  .trow .tag-muted{font-size:.8em; color:rgba(250,244,228,.55);}
+
+  /* light-blue section, matching the reference's Takeaways section */
+  .section-light{
+    background:linear-gradient(180deg, var(--blue-light-1), var(--blue-light-2));
+    color:var(--ink-navy);
+  }
+  .section-light h2{color:var(--ink-navy);}
+  .section-light .section-intro{color:var(--ink-navy-soft); opacity:1;}
+
+  .skill-group{margin-top:34px;}
+  .skill-group:first-child{margin-top:8px;}
+  .skill-group h4{
+    font-family:"Lora","Noto Serif JP",serif; font-style:italic; font-weight:600; font-size:1.1rem;
+    margin-bottom:14px;
+  }
+  .skill-group.c-coral h4{color:var(--accent);}
+  .skill-group.c-blue h4{color:var(--blue-2);}
+  .skill-group.c-amber h4{color:var(--amber-ink);}
+  .chips{display:flex; flex-wrap:wrap; gap:9px;}
+  .chip{
+    border:1px solid rgba(27,43,58,.14); background:rgba(255,255,255,.55);
+    border-radius:100px; padding:7px 14px; font-size:.84rem; color:var(--ink-navy-soft);
+  }
+
+  /* footer facts (cream) */
+  .fact-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:40px;}
+  @media (max-width:760px){ .fact-grid{grid-template-columns:1fr; gap:28px;} }
+  .fact-grid h4{
+    font-family:"DM Sans","Noto Sans JP",sans-serif; font-size:.78rem; letter-spacing:.05em;
+    color:var(--ink-faint); margin-bottom:12px; font-weight:500;
+  }
+  .fact-grid .item{margin-bottom:10px;}
+  .fact-grid .item b{display:block; font-size:.94rem; color:var(--ink); font-weight:600;}
+  .fact-grid .item span{font-size:.82rem; color:var(--ink-faint);}
+  .lang-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; font-size:.92rem;}
+  .lang-bar{width:90px; height:5px; border-radius:3px; background:var(--line); position:relative; overflow:hidden;}
+  .lang-bar i{position:absolute; left:0; top:0; bottom:0; background:var(--accent); border-radius:3px;}
+
+  /* footer cta — coral gradient, matching the reference's card-answer / hero-adjacent coral treatment */
+  footer.cta{
+    background:
+      radial-gradient(130% 80% at 18% 0%, rgba(255,255,255,.16), rgba(0,0,0,0) 58%),
+      linear-gradient(155deg, var(--accent) 0%, var(--accent-deep) 100%);
+    color:var(--cream-on-blue);
+    padding-block:80px;
+  }
+  footer.cta h2{color:var(--cream-on-blue); font-size:clamp(1.6rem,3.4vw,2.2rem);}
+  footer.cta h2 em{color:var(--accent-gold); font-style:italic;}
+  footer.cta .sub{color:rgba(250,244,228,.85); margin-top:14px; max-width:36em; font-size:1rem;}
+  footer.cta .cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-top:34px;}
+  footer.cta .btn-primary{background:var(--cream-on-blue); color:var(--accent-deep);}
+  footer.cta .btn-ghost{border-color:rgba(250,244,228,.4); color:var(--cream-on-blue);}
+  footer.cta .btn-ghost:hover{border-color:rgba(250,244,228,.75);}
+  .foot-meta{
+    margin-top:56px; padding-top:24px; border-top:1px solid rgba(250,244,228,.25);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:.8rem; color:rgba(250,244,228,.75);
+  }
+
+  ::selection{background:var(--accent-soft); color:var(--accent-deep);}
+</style>
+</head>
+<body>
+
+<div class="topbar"></div>
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="https://bonfocchi.com/"><span class="mark">B</span> Bonfocchi</a>
+    <nav class="nav-links">
+      <a href="#work" class="hide-mobile">職歴</a>
+      <a href="#skills" class="hide-mobile">スキル</a>
+      <a href="mailto:hey@bonfocchi.com" class="btn btn-primary" style="padding:9px 18px; color:#ffffff;">お問い合わせ</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-globe-wrap" aria-hidden="true">
+    <canvas id="globeCanvas"></canvas>
+  </div>
+  <div class="hero-fade" aria-hidden="true"></div>
+  <div id="globeTooltip" class="globe-tooltip" role="tooltip"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1>
+        <span class="strike">プロダクトリーダー ・ 元CTO / 創業者</span>
+        <span class="headline">プロダクトを構築し、それを支えるチーム、システム、戦略も築く。</span>
+      </h1>
+      <p class="hero-sub">リカルド・ボンフォッキ・ヴェントゥーラです。エンジニアリング、プロダクト、リーダーシップにまたがる18年間のキャリア。リスボンでのフリーランス開発から、国際的な技術チームの創業・統率まで携わってきました。</p>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-cream">
+  <div class="wrap bio-grid">
+    <div>
+      <span class="kicker">概要</span>
+      <h2>仕事のかたち</h2>
+    </div>
+    <div class="prose">
+      <p>2008年、リスボンでフリーランスのフルスタック開発者としてキャリアをスタート。Flashを使った小規模サイトから決済システムの統合まで、個人事業主から大企業まで幅広いクライアントに携わってきた。その振れ幅は今も変わらない ── <strong>アーキテクチャを書く人間</strong>であり、同じ四半期のうちに<strong>市場戦略を描く人間</strong>でもあり続けている。</p>
+      <p>東京への移住は二度経験している。最初は<strong>Hivelocity</strong>で、その数年後には<strong>Heartcore</strong>のCTOとして。エンジニアリングチームを採用・統率し、パフォーマンスとメモリ安全性が重要な新規エンタープライズ製品にRustを採用し、傍らでGartnerのアナリスト対応も担った。リスボンを拠点に、デンマークに本社を置くマルチテナントCMS、<strong>Crably</strong>を共同創業。ゼロから一人で構築し、10か国以上の顧客を獲得した。<strong>Colmena</strong>のCTOとしては、HR・福利厚生プラットフォームをゼロから設計し、その後のCoverflexによる買収まで在籍。<strong>Capdesk</strong>のデンマークチームではRailsを用いたゼロイチのVCプラットフォームモジュールの構築にも携わった。</p>
+      <p>直近では、リスボンからリモートでオランダの<strong>Publitas</strong>に参画し、フルタイムでコードに向き合う日々に戻っている。RailsとRustのAPIをベンチマークしながら、テストとビルドの信頼性向上をエンジニアリング組織全体に広げてきた。この仕事は、技術的な深さと組織的なレバレッジの交差点にある ── スタック内の課題を解決しながら、チーム全体に広がる実践を確立していく。<strong>戦略に「なぜ」を問えるほど近く、スタックに「答え」を出荷できるほど近い場所に立っている。</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="what">
+  <div class="wrap">
+    <span class="kicker">提供できる価値</span>
+    <h2>経営者の判断力、<em>エンジニア</em>の手</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-top">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+          <h3>ゼロイチで作り、長く使われるプラットフォームへ</h3>
+          <p>空のリポジトリから、チームが信頼できるシステムへ。</p>
+        </div>
+        <div class="card-answer">
+          <span class="tag">実践として</span>
+          <p class="answer-line">まずアーキテクチャ、その後に<em>ロードマップ</em>。</p>
+          <p class="answer-body">ColmenaとCrablyでゼロからプラットフォームを構築してきた経験から、他の誰かが依存することになるコードベースに何が必要かを理解している。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/></svg></div>
+          <h3>3つの大陸にまたがるチームを率いる</h3>
+          <p>東京では現地常駐、それ以降はリモートファーストで。</p>
+        </div>
+        <div class="card-answer">
+          <span class="tag">到達範囲</span>
+          <p class="answer-line">移住は一度。リモートで率いた国は<em>4</em>か国。</p>
+          <p class="answer-body">2008年からリスボンを拠点に、日本、デンマーク、オランダ、アメリカのチームでエンジニアリングとプロダクトを率いてきた。</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-top">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6 2 12l6 6M16 6l6 6-6 6M10 4 8 20"/></svg></div>
+          <h3>ターミナルから役員会まで、両方に精通</h3>
+          <p>Rustのパフォーマンスチューニングと、Gartnerへの報告が同じ週に。</p>
+        </div>
+        <div class="card-answer">
+          <span class="tag">領域の広さ</span>
+          <p class="answer-line">アーキテクチャ、GTM、<em>M&amp;A</em>アドバイザリー。</p>
+          <p class="answer-body">両者の間を引き継ぎなしで行き来できるため、たいてい誰かの会議がひとつ減る。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-deep" id="work">
+  <div class="wrap">
+    <span class="kicker on-blue">職歴</span>
+    <h2>18年間を、<em>凝縮</em>して。</h2>
+    <p class="section-intro">フリーランス開発者から、二度のCTOへ ── すべての職歴を時系列で。</p>
+    <div class="timeline on-blue">
+      <div class="trow">
+        <div class="dates">2025年〜</div>
+        <div><div class="role">シニアバックエンド&amp;プラットフォームエンジニア</div><div class="company">Publitas</div><div class="loc">ポルトガル、リモート</div></div>
+        <div class="desc">Rails、Rust、JSの主要APIを最適化し、組織全体でフレーキーテストの診断手法を標準化。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2024年</div>
+        <div><div class="role">プロダクト責任者</div><div class="company">Heartcore Enterprises, Inc.</div><div class="loc">ポルトガル、リモート</div></div>
+        <div class="desc">分散・多文化なプロダクトチームのロードマップとGTM/マネタイズ戦略を統括。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2022年 — 2024年</div>
+        <div><div class="role">CTO</div><div class="company">Heartcore, Inc. (Japan)</div><div class="loc">東京、日本</div></div>
+        <div class="desc">Rustを用いて新規エンタープライズ製品の技術基盤をゼロから構築。多文化チームの採用・移住を主導し、Gartnerとの関係およびM&amp;A戦略を管理。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2022年</div>
+        <div><div class="role">シニアソフトウェアエンジニア</div><div class="company">Capdesk <span class="tag-muted">(Carta.comが買収)</span></div><div class="loc">ポルトガル、リモート</div></div>
+        <div class="desc">Carta.comによる買収に先立ち、Railsを用いたゼロイチのVCプラットフォームモジュールをプリンシパルエンジニアとして構築(のちに未リリースに)。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2019年 — 2021年</div>
+        <div><div class="role">CTO</div><div class="company">Colmena <span class="tag-muted">(Coverflex.comが買収)</span></div><div class="loc">ポルトガル、リモート</div></div>
+        <div class="desc">マルチテナント型のHR・福利厚生・保険プラットフォームをゼロから設計・リリース。買収に至るまで技術面の実行を主導。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2018年 — 2019年</div>
+        <div><div class="role">テックリードエンジニア</div><div class="company">Hivelocity Inc. (Japan)</div><div class="loc">東京、日本</div></div>
+        <div class="desc">プロダクトエンジニアリングチームを統率し、プロセスフローを最適化。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2017年 — 2018年</div>
+        <div><div class="role">プロダクト&amp;プロジェクトマネージャー 兼 フルスタックエンジニア</div><div class="company">Hivelocity Inc. (Japan)</div><div class="loc">東京、日本</div></div>
+        <div class="desc">新しい自動化サービスのコンセプトとUXを設計。多文化・一部リモートのチームを率い、主要APIをリリース。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2016年 — 2017年</div>
+        <div><div class="role">フルスタック開発者 兼 ソリューションエンジニア</div><div class="company">Hivelocity Inc. (Japan)</div><div class="loc">東京、日本</div></div>
+        <div class="desc">CRMのデプロイフローと、ReactJS/Reduxによるストリーミングアプリを構築。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2014年 — 2019年</div>
+        <div><div class="role">共同創業者 兼 マネージングディレクター</div><div class="company">Crably IVS <span class="tag-muted">(デンマークのスタートアップ)</span></div><div class="loc">ポルトガル、リモート</div></div>
+        <div class="desc">Rails、Postgres、Liquidを用いたマルチテナント型CMSを単独で設計 ── ゼロから10か国以上の顧客を獲得するまでスケール。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2010年 — 2016年</div>
+        <div><div class="role">Webプロデューサー 兼 フルスタックコンサルタント</div><div class="company">フリーランス</div><div class="loc">ポルトガル、リモート</div></div>
+        <div class="desc">TheSurfShareやMySiteAuditorなどのクライアント向けに、Rails・PHP・WordPressを用いた戦略立案と実装を担当。</div>
+      </div>
+      <div class="trow">
+        <div class="dates">2008年 — 2010年</div>
+        <div><div class="role">リード開発者</div><div class="company">Pixel Design &amp; New Media</div><div class="loc">リスボン、ポルトガル</div></div>
+        <div class="desc">個人から企業まで幅広いクライアント向けに、フルスタックのWeb開発とFlash/Flex RIAを担当。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light" id="skills">
+  <div class="wrap">
+    <span class="kicker on-navy">スキル</span>
+    <h2>得意領域</h2>
+    <p class="section-intro">3つの領域 ── 別々にではなく、組み合わせて使うことが多い。</p>
+    <div class="skill-group c-coral">
+      <h4>リーダーシップ&amp;プロダクト</h4>
+      <div class="chips">
+        <span class="chip">経営・プロダクトリーダーシップ</span>
+        <span class="chip">プロダクト戦略</span>
+        <span class="chip">ベンチャー構築</span>
+        <span class="chip">チーム・エンジニアリングマネジメント</span>
+        <span class="chip">メンタリング&amp;コーチング</span>
+        <span class="chip">GTM戦略</span>
+        <span class="chip">部門横断リーダーシップ</span>
+      </div>
+    </div>
+    <div class="skill-group c-blue">
+      <h4>アーキテクチャ&amp;技術戦略</h4>
+      <div class="chips">
+        <span class="chip">システムアーキテクチャ</span>
+        <span class="chip">機械学習</span>
+        <span class="chip">ディープラーニング</span>
+        <span class="chip">AI・ニューラルネットワーク</span>
+        <span class="chip">技術ロードマップ&amp;ガバナンス</span>
+        <span class="chip">クラウドインフラ</span>
+        <span class="chip">DevOps戦略</span>
+      </div>
+    </div>
+    <div class="skill-group c-amber">
+      <h4>技術スタック</h4>
+      <div class="chips">
+        <span class="chip">Ruby / Rails</span>
+        <span class="chip">Rust</span>
+        <span class="chip">JavaScript / React</span>
+        <span class="chip">Python</span>
+        <span class="chip">PHP / Laravel</span>
+        <span class="chip">Java</span>
+        <span class="chip">C</span>
+        <span class="chip">Docker</span>
+        <span class="chip">Git</span>
+        <span class="chip">Unix / Linux</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-cream">
+  <div class="wrap fact-grid">
+    <div>
+      <h4>学歴</h4>
+      <div class="item">
+        <b>理学士(通信ネットワーク工学)</b>
+        <span>Instituto Superior Técnico, リスボン大学 — 2010年</span>
+      </div>
+    </div>
+    <div>
+      <h4>資格</h4>
+      <div class="item"><b>ニューラルネットワークとディープラーニング</b><span>DeepLearning.AI ・ 2026年</span></div>
+      <div class="item"><b>機械学習スペシャライゼーション</b><span>スタンフォード大学 / DeepLearning.AI ・ 2026年</span></div>
+      <div class="item"><b>アントレプレナーシップ(科学技術基礎)</b><span>リスボン大学</span></div>
+    </div>
+    <div>
+      <h4>言語</h4>
+      <div class="lang-row"><span>英語</span><div class="lang-bar"><i style="width:100%"></i></div></div>
+      <div class="lang-row"><span>ポルトガル語</span><div class="lang-bar"><i style="width:100%"></i></div></div>
+      <div class="lang-row"><span>日本語</span><div class="lang-bar"><i style="width:24%"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="cta" id="contact">
+  <div class="wrap">
+    <span class="kicker" style="color:rgba(250,244,228,.8);">お問い合わせ</span>
+    <h2>あなたが<em>作っているもの</em>について、話しましょう。</h2>
+    <p class="sub">プロダクトリーダーシップ、CTO、シニアエンジニアリングポジションを求めています ── リモート優先、リスボンを拠点に、適したチームであれば移住も可能です。</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:hey@bonfocchi.com">お問い合わせ</a>
+      <a class="btn btn-ghost" href="https://linkedin.com/in/bonfocchi" target="_blank" rel="noopener">LinkedIn ↗</a>    </div>
+    <div class="foot-meta">
+      <span>Copyright © 2026 Ricardo Bonfocchi Ventura. All rights reserved.</span>
+      <span>ポルトガル語 ・ 英語 ・ 日本語（初心者）</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datamaps/0.5.9/datamaps.world.min.js"></script>
+<script>
+(function(){
+  try {
+    if (!window.d3 || !window.topojson || !window.Datamap) return;
+    var canvas = document.getElementById('globeCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    var wrap = canvas.parentElement;
+    var tooltip = document.getElementById('globeTooltip');
+
+    var topology = window.Datamap.prototype.worldTopo;
+    var world = window.topojson.feature(topology, topology.objects.world);
+    var graticule = d3.geoGraticule().step([20, 20])();
+
+    var CITIES = [
+      {name:'リスボン', lat:38.72, lon:-9.14, home:true},
+      {name:'コペンハーゲン', lat:55.68, lon:12.57},
+      {name:'ロンドン', lat:51.51, lon:-0.13},
+      {name:'アムステルダム', lat:52.37, lon:4.90},
+      {name:'シカゴ', lat:41.88, lon:-87.63},
+      {name:'フィラデルフィア', lat:39.95, lon:-75.16},
+      {name:'ベンチュラ、CA', lat:34.28, lon:-119.30},
+      {name:'ロスアルトス、CA', lat:37.39, lon:-122.11},
+      {name:'サルバドール', lat:-12.97, lon:-38.51},
+      {name:'フロリアノーポリス', lat:-27.60, lon:-48.55},
+      {name:'東京', lat:35.68, lon:139.69},
+      {name:'ミャンマー', lat:16.87, lon:96.20},
+      {name:'ダナン', lat:16.05, lon:108.20}
+    ];
+    var home = CITIES[0];
+    var others = CITIES.slice(1);
+
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var TILT = -12;        // fixed axial tilt (roll) — reduced, so more of the northern hemisphere reads clearly
+    var SPIN_DEG_S = 5;    // spin speed, degrees/second, around the true polar axis
+    var LAMBDA0 = 53.5;    // initial spin so Europe/the Americas face forward
+    var STEP_MS = 2000;    // a new, visible-side-only connection every two seconds
+
+    var projection = d3.geoOrthographic().clipAngle(90).precision(0.3);
+    var path = d3.geoPath(projection, ctx);
+    var dpr = 1;
+    var pins = []; // updated each draw(): [{name, x, y (CSS px)}]
+
+    function resize(){
+      var rect = wrap.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.round(rect.width*dpr));
+      canvas.height = Math.max(1, Math.round(rect.height*dpr));
+      var W = canvas.width, H = canvas.height;
+      // keep the globe positioned relative to the same 1120px content column
+      // every other section uses, instead of the full (possibly very wide) hero width
+      var contentW = Math.min(W, 1120*dpr);
+      var leftOffset = (W - contentW) / 2;
+      var cx = leftOffset + contentW*0.72, cy = H*0.46, R = Math.min(contentW,H)*0.42;
+      projection.scale(R).translate([cx, cy]);
+    }
+
+    function visible(lonlat){
+      var r = projection.rotate();
+      var center = [-r[0], -r[1]];
+      return d3.geoDistance(lonlat, center) < 1.52; // ~87°, matches the horizon fade
+    }
+
+    var lastTick = -1;
+    var connPair = null; // [cityA, cityB], both guaranteed visible when chosen
+
+    function pickConnection(tick){
+      if (tick === lastTick) return;
+      lastTick = tick;
+      var visList = CITIES.filter(function(c){ return visible([c.lon, c.lat]); });
+      if (visList.length < 2){ connPair = null; return; }
+      var homeVis = null, restVis = [];
+      visList.forEach(function(c){ if (c.home) homeVis = c; else restVis.push(c); });
+      if (homeVis && restVis.length){
+        connPair = [homeVis, restVis[tick % restVis.length]];
+      } else {
+        var i0 = tick % visList.length;
+        connPair = [visList[i0], visList[(i0+1) % visList.length]];
+      }
+    }
+
+    function draw(tick){
+      pickConnection(tick);
+      var W = canvas.width, H = canvas.height;
+      ctx.clearRect(0,0,W,H);
+      if (W < 4 || H < 4) return;
+      var t = projection.translate(), cx = t[0], cy = t[1];
+      var R = projection.scale();
+
+      var grad = ctx.createRadialGradient(cx-R*0.3, cy-R*0.3, R*0.1, cx, cy, R);
+      grad.addColorStop(0, 'rgba(220,238,250,0.65)');
+      grad.addColorStop(1, 'rgba(196,226,244,0.35)');
+      ctx.beginPath(); path({type:'Sphere'});
+      ctx.fillStyle = grad; ctx.fill();
+
+      ctx.beginPath(); path(graticule);
+      ctx.strokeStyle = 'rgba(21,92,158,0.16)';
+      ctx.lineWidth = Math.max(0.5, R*0.0022);
+      ctx.stroke();
+
+      ctx.beginPath(); path(world);
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(21,92,158,0.55)';
+      ctx.lineWidth = Math.max(0.6, R*0.0032);
+      ctx.stroke();
+
+      ctx.beginPath(); path({type:'Sphere'});
+      ctx.strokeStyle = 'rgba(21,92,158,0.4)';
+      ctx.lineWidth = Math.max(1, R*0.006);
+      ctx.stroke();
+
+      if (connPair){
+        var a = [connPair[0].lon, connPair[0].lat], b = [connPair[1].lon, connPair[1].lat];
+        if (visible(a) && visible(b)){
+          var interp = d3.geoInterpolate(a, b);
+          var line = {type:'LineString', coordinates: d3.range(0, 1.001, 1/64).map(interp)};
+          ctx.beginPath(); path(line);
+          ctx.strokeStyle = 'rgba(242,196,109,0.85)';
+          ctx.lineWidth = Math.max(1, R*0.006);
+          ctx.stroke();
+        }
+      }
+
+      pins = [];
+      CITIES.forEach(function(c){
+        var ll = [c.lon, c.lat];
+        if (!visible(ll)) return;
+        var xy = projection(ll);
+        if (!xy) return;
+        var r = c.home ? R*0.03 : R*0.022;
+        ctx.beginPath();
+        ctx.arc(xy[0], xy[1], r*2.4, 0, Math.PI*2);
+        ctx.fillStyle = c.home ? 'rgba(232,105,74,0.28)' : 'rgba(232,105,74,0.22)';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(xy[0], xy[1], r, 0, Math.PI*2);
+        ctx.fillStyle = '#e8694a';
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = Math.max(0.6, R*0.003);
+        ctx.fill();
+        ctx.stroke();
+        pins.push({name: c.name, x: xy[0]/dpr, y: xy[1]/dpr});
+      });
+    }
+
+    var start = null;
+
+    function frame(ts){
+      if (start === null) start = ts;
+      var elapsed = ts - start;
+      projection.rotate([LAMBDA0 + (elapsed/1000)*SPIN_DEG_S, 0, TILT]);
+      var tick = Math.floor(elapsed/STEP_MS);
+      draw(tick);
+      requestAnimationFrame(frame);
+    }
+
+    resize();
+    projection.rotate([LAMBDA0, 0, TILT]);
+    draw(0);
+    if (!reduceMotion){
+      requestAnimationFrame(frame);
+    }
+
+    canvas.addEventListener('mousemove', function(e){
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      var found = null, bestD = 14;
+      pins.forEach(function(p){
+        var d = Math.hypot(p.x-mx, p.y-my);
+        if (d < bestD){ bestD = d; found = p; }
+      });
+      if (found){
+        tooltip.textContent = found.name;
+        tooltip.style.left = found.x + 'px';
+        tooltip.style.top = found.y + 'px';
+        tooltip.classList.add('visible');
+        canvas.style.cursor = 'pointer';
+      } else {
+        tooltip.classList.remove('visible');
+        canvas.style.cursor = 'default';
+      }
+    });
+    canvas.addEventListener('mouseleave', function(){ tooltip.classList.remove('visible'); });
+
+    var resizeTimer;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function(){ resize(); draw(0); }, 100);
+    });
+    if (window.ResizeObserver){
+      var ro = new ResizeObserver(function(){ resize(); draw(0); });
+      ro.observe(wrap);
+    }
+  } catch(e) { /* decorative only — hero works fine without it */ }
+})();
+</script>
+</body>
+</html>
